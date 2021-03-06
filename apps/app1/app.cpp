@@ -4,9 +4,9 @@
 #include <regex>
 #include <string>
 using namespace std;
-#include <boost/preprocessor/boo
 
 
+//#include <boost/preprocessor/
 #define STR(...) BOOST_
 
 
@@ -26,7 +26,7 @@ auto parse = [](string str){
 
 int main() {
     
-    
+    BOOST_PP_EMPTY ()
     
     EMPTY (
         
