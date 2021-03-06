@@ -94,3 +94,25 @@ target_include_directories(
 #     XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME TRUE
 #     XCODE_ATTRIBUTE_EXECUTABLE_NAME "exeName"
 # )
+
+
+# install(TARGETS ${root_name} EXPORT ${root_name}-export
+#     LIBRARY DESTINATION lib
+#     ARCHIVE DESTINATION lib
+# )
+
+# install(EXPORT ${root_name}-export FILE
+#     ${root_name}Targets.cmake NAMESPACE
+#     ${root_name}:: DESTINATION lib/cmake/${root_name} 
+# )
+
+# file(GLOB_RECURSE headers ${root_include_dir}/*.hpp)
+
+# install(FILES ${headers}
+# DESTINATION "include/${root_name} ")
+
+# install(FILES ${PROJECT_SOURCE_DIR}/cmake/${root_name}Config.cmake DESTINATION "lib/cmake/${root_name}" )
+
+
+
+

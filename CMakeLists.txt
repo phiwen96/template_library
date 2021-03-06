@@ -5,6 +5,8 @@ ph_git ()
 
 
 
+
+
 get_filename_component(root_src_dir src ABSOLUTE CACHE "")
 get_filename_component(root_include_dir include ABSOLUTE CACHE "")
 get_filename_component(root_binary_dir ${CMAKE_CURRENT_BINARY_DIR} ABSOLUTE CACHE "")
@@ -24,6 +26,15 @@ get_filename_component(root_dir ${CMAKE_CURRENT_LIST_DIR} ABSOLUTE CACHE "")
 # set_property(GLOBAL PROPERTY source_list_property "bajs")
 ph_define_self (self)
 ph_define_property (root_name ${self})
+
+set(PACKAGE_VERSION 1)
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+    ${self}ConfigVersion.cmake
+    VERSION ${PACKAGE_VERSION}
+    COMPATIBILITY AnyNewerVersion
+    )
 
 # ph_header_list (headers)
 # message(${headers})
@@ -57,6 +68,26 @@ project (
 	VERSION 1.0
 	LANGUAGES CXX C
     DESCRIPTION "Very nice project")
+
+
+# Packaging support
+# set(CPACK_PACKAGE_VENDOR "Vendor name")
+# set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Some summary")
+# set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+# set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+# set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+# set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENCE")
+# set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
+
+# set(CPACK_SOURCE_GENERATOR "TGZ;ZIP")
+# set(CPACK_SOURCE_IGNORE_FILES
+#     /.git
+#     /dist
+#     /.*build.*
+#     /\\\\.DS_Store
+# )
+
+# include(CPack)
 
 
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
