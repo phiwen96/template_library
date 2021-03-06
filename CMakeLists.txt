@@ -63,6 +63,8 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror" CACHE STRING "C++ flags")
 
 	set_property(GLOBAL PROPERTY USE_FOLDERS YES)
+    # set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
+    #     STRINGS Debug Release Profile)
     
 
 	# find_package (Boost 1.75 REQUIRED)

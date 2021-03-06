@@ -31,6 +31,8 @@ ph_get_property (root_name root_name)
 
 add_library (${root_name} STATIC ${SOURCE_LIST} ${HEADER_LIST})
 
+target_compile_features (${root_name} PRIVATE cxx_std_20)
+
 get_property(ResultVariable TARGET ${root_name} PROPERTY CXX_STANDARD)
 
 add_library(ph::${root_name} ALIAS ${root_name})
@@ -42,11 +44,12 @@ set(ENABLE_ALGO_BETA 0 CACHE BOOL "")
 #   message(STATUS "${subdir}")
 # endforeach()
 
-target_sources (${root_name} PRIVATE "${PROJECT_BINARY_DIR}/include/version.hpp")
+# target_sources (${root_name} PRIVATE "${PROJECT_BINARY_DIR}/include/version.hpp")
 
 configure_file (
     "${PROJECT_SOURCE_DIR}/include/version.hpp.in"
     "${PROJECT_BINARY_DIR}/include/version.hpp"
+    @ONLY
 )
 
 
@@ -62,31 +65,20 @@ target_include_directories (${root_name} PUBLIC ${root_include_dir})
 target_include_directories (${root_name} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 
-target_include_directories(${root_name} PRIVATE
+target_include_directories(
+    ${root_name} 
+ PRIVATE
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/${root_name}>
     $<INSTALL_INTERFACE:include/${root_name}>
-)
-
-target_include_directories(${root_name} PUBLIC
+ PUBLIC
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
 
 
-# target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-#     $<BUILD_INTERFACE:${root_include}/${CMAKE_PROJECT_NAME}>
-#     $<INSTALL_INTERFACE:include/${CMAKE_PROJECT_NAME}>
-# )
-
-# target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC
-#     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-#     $<INSTALL_INTERFACE:include>
-# )
 
 
 
-
-# cmake -S . -B xbuild -GXcode && cmake --open xbuild
 
 
 

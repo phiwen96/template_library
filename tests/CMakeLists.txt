@@ -16,6 +16,8 @@ endif()
 # Tests need to be added as executables first
 add_executable(testlib testlib.cpp)
 
+set_target_properties (testlib PROPERTIES CXX_STANDARD 20)
+
 # I'm using C++17 in the test
 target_compile_features(testlib PRIVATE cxx_std_20)
 
