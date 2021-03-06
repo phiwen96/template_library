@@ -20,7 +20,10 @@ function(ph_boost target)
         target_include_directories (${target} INTERFACE ${Boost_INCLUDE_DIRS})
     endif()
     if (NOT p_no_pch)
-        target_precompile_headers (${target} PRIVATE boost/preprocessor/facilities/empty.hpp)
+        target_precompile_headers (${target} 
+         PRIVATE 
+            [["boost/preprocessor/facilities/empty.hpp"]]
+        )
     endif ()
     
     
