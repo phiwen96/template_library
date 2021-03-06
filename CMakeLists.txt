@@ -1,11 +1,14 @@
 cmake_minimum_required (VERSION 3.19.4)
+include (cmake/functions.cmake)
+ph_dont_build_here ()
+
+
 
 get_filename_component(root_src_dir src ABSOLUTE CACHE "")
 get_filename_component(root_include_dir include ABSOLUTE CACHE "")
 get_filename_component(root_binary_dir ${CMAKE_CURRENT_BINARY_DIR} ABSOLUTE CACHE "")
 get_filename_component(root_dir ${CMAKE_CURRENT_LIST_DIR} ABSOLUTE CACHE "")
 
-include (cmake/functions.cmake)
 
 
 

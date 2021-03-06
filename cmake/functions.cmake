@@ -384,3 +384,24 @@ endmacro ()
 
 # # Automatically getting PROJECT_VERSION_MAJOR, My_VERSION_MAJOR, etc.
 # project(My LANGUAGES CXX VERSION ${VERSION_STRING})
+
+
+
+function(COMPLEX) 
+    cmake_parse_arguments(
+        COMPLEX_PREFIX
+        "SINGLE;ANOTHER" "ONE_VALUE;ALSO_ONE_VALUE" "MULTI_VALUES"
+        ${ARGN}
+    ) 
+endfunction()
+
+
+
+macro(ph_dont_build_here)
+set(CMAKE_DISABLE_SOURCE_CHANGES ON)
+set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)s
+    file (TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH)
+    if (EXISTS "${LOC_PATH}")
+        message (FATAL_ERROR "You cannot build in a source directory.")
+    endif ()
+endmacro()
