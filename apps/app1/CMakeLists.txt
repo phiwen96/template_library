@@ -1,6 +1,6 @@
 ph_define_self (self)
 
-add_executable(${self} MACOSX_BUNDLE *.cpp *.hpp)
+add_executable(${self} MACOSX_BUNDLE app.cpp)
 target_compile_features(${self} PRIVATE cxx_std_20)
 set(APP_NAME ${self})
 
