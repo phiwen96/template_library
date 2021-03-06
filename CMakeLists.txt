@@ -7,12 +7,20 @@ get_filename_component(root_dir ${CMAKE_CURRENT_LIST_DIR} ABSOLUTE CACHE "")
 
 include (cmake/functions.cmake)
 
-func (SOURCES foo.cpp bar.cpp TARGET kiss SNOPP myApp ENABLE_NET)
-func (COOL_STUFF TARGET dummy IMAGES here.png there.png gone.png)
+function(test)
+    ph_parse (ARGS_0 z ARGS_1 o1 o2 ARGS_N n1 n2)
+    
+endfunction()
+
+test ()
+
+
+# func (SOURCES foo.cpp bar.cpp TARGET kiss SNOPP myApp ENABLE_NET)
+# func (COOL_STUFF TARGET dummy IMAGES here.png there.png gone.png)
 
 # return ()
 
-ph_define_current_dir_name (self CACHE)
+ph_define_current_dir_name (self CACHE PUBLIC)
 
 # return()
 

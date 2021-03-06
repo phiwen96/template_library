@@ -1,6 +1,58 @@
 cmake_minimum_required (VERSION 3.19.4)
 
+
+
+macro (ph_parse)
+    # Define the supported set of keywords
+    set(prefix       ARG)
+    set(noValues     ARGS_0)
+    set(singleValues ARGS_1)
+    set(multiValues  ARGS_N)
+
+    cmake_parse_arguments(${prefix}
+                        "${noValues}"
+                        "${singleValues}"
+                        "${multiValues}"
+                        ${ARGN}
+    )
+
+    foreach(arg IN LISTS noValues)
+        if(${${prefix}_${arg}})
+            list (APPEND prefix_r ${arg})
+                
+            message("  ${arg} enabled")
+        else()
+            message("  ${arg} disabled")
+        endif()
+    endforeach()
+    foreach(arg IN LISTS singleValues)
+        list (APPEND singleValues_r ${${prefix}_${arg}})
+        # Single argument values will print as a simple string
+        # Multiple argument values will print as a list
+        message("  ${arg} = ${${prefix}_${arg}}")
+    endforeach()
+    foreach(arg IN LISTS multiValues)
+        list (APPEND multiValues_r ${${prefix}_${arg}})
+        # Single argument values will print as a simple string
+        # Multiple argument values will print as a list
+        message("  ${arg} = ${${prefix}_${arg}}")
+    endforeach()
+    
+
+    cmake_parse_arguments(${prefix}
+                        "${noValues_r}"
+                        "${singleValues_r}"
+                        "${multiValues_r}"
+                        ${ARGN}
+    )
+
+endmacro ()
+
+
+
+
 macro (ph_define_current_dir_name res)
+   
     get_filename_component (${res} ${CMAKE_CURRENT_LIST_DIR} NAME ${ARGN})
     string(REPLACE " " "_" res ${res})
 endmacro ()
@@ -22,6 +74,7 @@ function(add_mytest targetName)
                COMMAND ${targetName}
       )
 endfunction()
+
 
 
 
