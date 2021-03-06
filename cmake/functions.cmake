@@ -1,171 +1,6 @@
 cmake_minimum_required (VERSION 3.19.4)
 include(CMakeParseArguments)
 
-macro (ph_gen_function)
-    # set(prefix       ARG_)
-    set(options    )
-    set(oneValueArgs)
-    set(multiValueArgs OPTION VALUE MULTIVALUE)
-
-    # message(${multiValueArgs})
-    cmake_parse_arguments(KUK "${options}" "${oneValueArgs}" "${multiValueArgs}" "${ARGN}") 
-
-    
-    # Mandatory
-    if( KUK_OPTION )
-        # message( STATUS "inside OPTION=${KUK_OPTION}" )
-        set (options ${KUK_OPTION})
-        message( STATUS "${options}" )
-    endif()
-
-    if( KUK_VALUE )
-        # message( STATUS "inside OPTION=${KUK_VALUE}" )
-        set (oneValueArgs ${KUK_VALUE})
-        message( STATUS "${oneValueArgs}" )
-    endif()
-
-    if( KUK_MULTIVALUE )
-        # message( STATUS "inside OPTION=${KUK_MULTIVALUE}" )
-        set (multiValueArgs ${KUK_MULTIVALUE})
-        message( STATUS "${multiValueArgs}" )
-    endif()
-
-    # message(${options})
-    # string (REPLACE ";" " " options "${options}")
-    # string (REPLACE ";" " " multiValueArgs ${multiValueArgs})
-    #         string(REPLACE " " ";" oneValueArgs "${oneValueArgs}")
-
-    #         message(${options})
-    #         message(${oneValueArgs})
-    #         message(${multiValueArgs})
-
-    macro (bajskorven)
-        # message (${ARGN})
-        # set(prefix       ARG_)
-    # set(options     ${options})
-    # set(oneValueArgs ${oneValueArgs})
-    # set(multiValueArgs  ${multiValueArgs})
-    # message(${option})
-
-
-    message("${SOURCES}")
-
-        cmake_parse_arguments( _arg  "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN}) 
-
-        
-        message("${options}")
-
-        message("${SOURCES}")
-
-    foreach(arg ${options})
-        message(${arg})
-        if(${arg} IN_LIST _arg_KEYWORDS_MISSING_${arg})
-            message(STATUS "${arg}: missed value")
-        elseif(NOT DEFINED _arg_${arg})
-            message(STATUS "${arg}: undefined")
-        else()
-            message(STATUS "${arg}: got the value `${_arg_${arg}}`")
-        endif()
-    endforeach()
-
-    foreach(arg ${oneValueArgs})
-        # message(${arg})
-        if(${arg} IN_LIST _arg_KEYWORDS_MISSING_${arg})
-            message(STATUS "${arg}: missed value")
-        elseif(NOT DEFINED _arg_${arg})
-            message(STATUS "${arg}: undefined")
-        else()
-            message(STATUS "${arg}: got the value `${_arg_${arg}}`")
-        endif()
-    endforeach()
-
-    foreach(arg ${multiValueArgs})
-        # message(${arg})
-        if(${arg} IN_LIST _arg_KEYWORDS_MISSING_${arg})
-            message(STATUS "${arg}: missed value")
-        # elseif(NOT DEFINED _arg_${arg})
-            # message(STATUS "${arg}: undefined")
-        else()
-            foreach(arg2 ${arg})
-                message(${arg2})
-            endforeach()
-            
-            # message(STATUS "${arg}: got the value `${_arg_${arg}}`")
-        endif()
-    endforeach()
-    
-        
-
-        # foreach(arg IN ITEMS ${ARGN})
-        #     message(STATUS "\n ARG : ${arg} \n")
-        # endforeach()
-
-        foreach(arg IN ITEMS ${options2})
-            # message(STATUS "\n ARG : FITTA_${arg} \n")
-        endforeach()
-
-        # foreach(arg IN ITEMS ARGN)
-        # message("hej")
-        #     message(STATUS "\n ARG : ${arg} \n")
-        # endforeach()
-        
-
-        # message(options2)
-        foreach(arg IN LISTS options)
-            # message(${${prefix}_${arg}})
-            if(${${prefix}_${arg}})
-            # message("  ${arg} = ${${prefix}_${arg}}")
-            #   message("  ${arg} enabled")
-          else()
-            #   message("  ${arg} disabled")
-          endif()
-        endforeach()
-
-        # message(oneValueArgs2)
-        foreach(arg IN LISTS oneValueArgs)
-        # message("  ${arg} = ${FITTA_${arg}}")
-        # message(${arg})
-            # message("${${prefix}_${arg}}")
-            # message("${arg}")
-            # cmake_language(CALL ${arg} ${${prefix}_${arg}})
-            # Single argument values will print as a simple string
-            # Multiple argument values will print as a list
-            # message("  ${arg} = ${${prefix}_${arg}}")
-        endforeach()
-
-        # message(multiValueArgs2)
-        foreach(arg IN LISTS  multiValueArgs)
-        # get_filename_component (kk "${${prefix}_${arg}}" NAME)
-        # message("${kk}")
-        # message("${${prefix}_${arg}}")
-        # message(${arg})
-        # message("${arg}")
-        # message("${${prefix}_MULTIVALUE}")
-        # message(${prefix}_${arg})
-        # message("${${prefix}_${arg}}")
-          
-            
-            # message("${${prefix}_${arg}}")
-            # message("  ${arg} = ${${prefix}_${arg}}")
-        endforeach()
-
-
-        
-
-        
-
-        
-
-        foreach(arg IN LISTS ${multiValues_r})
-        # message("  ${arg} = ${${prefix}_${arg}}")
-            # Single argument values will print as a simple string
-            # Multiple argument values will print as a list
-            # message("  ${arg} = ${${prefix}_${arg}}")
-        endforeach()
-
-    endmacro()
-    
-endmacro ()
 
 
 
@@ -173,88 +8,25 @@ endmacro ()
 
 
 
-
-
-
-
-
-macro (ph_parse function_name)
-    # Define the supported set of keywords
-    set(prefix       ARG)
-    set(noValues     ARGS_0)
-    set(singleValues ARGS_1)
-    set(multiValues  ARGS_N)
-
-    cmake_parse_arguments(${prefix}
-                        "${noValues}"
-                        "${singleValues}"
-                        "${multiValues}"
-                        ${ARGN}
-    )
-
-    foreach(arg IN LISTS noValues)
-        if(${${prefix}_${arg}})
-            list (APPEND prefix_r ${arg})
-            # message("  ${arg} enabled")
-        else()
-            # message("  ${arg} disabled")
-        endif()
-    endforeach()
-    foreach(arg IN LISTS singleValues)
-        list (APPEND singleValues_r ${${prefix}_${arg}})
-        # message("  ${arg} = ${${prefix}_${arg}}")
-    endforeach()
-    foreach(arg IN LISTS multiValues)
-        list (APPEND multiValues_r ${${prefix}_${arg}})
-        # message("  ${arg} = ${${prefix}_${arg}}")
-    endforeach()
-    
-    set(message_command "message")
-    cmake_language(CALL ${message_command} STATUS "Hello World!")
-
-    cmake_parse_arguments(${prefix}
-                        "${noValues_r}"
-                        "${singleValues_r}"
-                        "${multiValues_r}"
-                        ${ARGN}
-    )
-
-    function (kiss)
-    foreach(arg IN LISTS noValues_r)
-        if(${${prefix}_${arg}})
-                
-            message("  ${arg} enabled")
-        else()
-            message("  ${arg} disabled")
-        endif()
-    endforeach()
-    foreach(arg IN LISTS singleValues_r)
-        cmake_language(CALL ${arg} ${${prefix}_${arg}})
-        # Single argument values will print as a simple string
-        # Multiple argument values will print as a list
-        message("  ${arg} = ${${prefix}_${arg}}")
-    endforeach()
-    foreach(arg IN LISTS multiValues_r)
-        # Single argument values will print as a simple string
-        # Multiple argument values will print as a list
-        message("  ${arg} = ${${prefix}_${arg}}")
-    endforeach()
-    endfunction()
-
-
-endmacro ()
 
 
 
 
 macro (ph_define_self res)
-    set (options PUBLIC)
-    cmake_parse_arguments (KUK "${options}" "" "" ${ARGN})
-    if (KUK_PUBLIC)
-        message("PUBLIC!!!!")
-
+    cmake_parse_arguments(
+        P
+        "SINGLE;ANOTHER;name;dir" "ONE_VALUE;ALSO_ONE_VALUE" "MULTI_VALUES"
+        ${ARGN}
+    ) 
+    # cmake_parse_arguments (KUK "${options}" "" "" ${ARGN})
+    if (P_name)
+    get_filename_component (${res} ${CMAKE_CURRENT_LIST_DIR} NAME)
+    elseif (P_dir)
+        get_filename_component (${res} ${CMAKE_CURRENT_LIST_DIR} ABSOLUTE DIRECTORY)
+    else ()
+        get_filename_component (${res} ${CMAKE_CURRENT_LIST_DIR} NAME)
     endif ()
-    get_filename_component (${res} ${CMAKE_CURRENT_LIST_DIR} NAME ${ARGN})
+    
     string(REPLACE " " "_" res ${res})
 endmacro ()
 
@@ -427,3 +199,26 @@ endif()
 # endif()
 endmacro()
 
+
+
+# MACRO(ph_subdir_list result curdir)
+#   FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
+#   SET(dirlist "")
+#   FOREACH(child ${children})
+#     IF(IS_DIRECTORY ${curdir}/${child})
+#       LIST(APPEND dirlist ${child})
+#     ENDIF()
+#   ENDFOREACH()
+#   SET(${result} ${dirlist})
+# ENDMACRO()
+
+MACRO(ph_subdir_list result curdir)
+  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
+  SET(dirlist "")
+  FOREACH(child ${children})
+    IF(IS_DIRECTORY ${curdir}/${child})
+      LIST(APPEND dirlist ${child})
+    ENDIF()
+  ENDFOREACH()
+  SET(${result} ${dirlist})
+ENDMACRO()
