@@ -7,64 +7,95 @@ macro (ph_gen_function function_name)
     set(singleValues OMEv)
     set(multiValues  ARGS_0 ARGS_1 ARGS_N)
 
+    
     cmake_parse_arguments(${prefix}
                         "${noValues}"
                         "${singleValues}"
                         "${multiValues}"
                         ${ARGN}
     )
-
     foreach(arg IN LISTS noValues)
         if(${${prefix}_${arg}})
-            list (APPEND prefix_r ${arg})
+            # list (APPEND prefix_r ${arg})
             # message("  ${arg} enabled")
         else()
             # message("  ${arg} disabled")
         endif()
     endforeach()
     foreach(arg IN LISTS singleValues)
-        list (APPEND singleValues_r ${${prefix}_${arg}})
+        # list (APPEND singleValues_r ${${prefix}_${arg}})
         # message("  ${arg} = ${${prefix}_${arg}}")
     endforeach()
     foreach(arg IN LISTS multiValues)
+        
         if (${arg} STREQUAL ARGS_0)
-            list (APPEND noValues_r ${${prefix}_${arg}})
+            # message("  ${arg} = ${${prefix}_${arg}}")
+            set (noValues ${${prefix}_${arg}})
+        endif()
+
+        if (${arg} STREQUAL ARGS_1)
+            # message("  ${arg} = ${${prefix}_${arg}}")
+            set (singleValues ${${prefix}_${arg}})
+        endif()
+
+        if (${arg} STREQUAL ARGS_N)
+            # message("  ${arg} = ${${prefix}_${arg}}")
+            set (multiValues ${${prefix}_${arg}})
+        endif()
+        # if (${arg} STREQUAL ARGS_0)
+            # list (APPEND noValues_r ${${prefix}_${arg}})
+            # list (APPEND noValues_r ${${prefix}_${arg}})
+            # message(${${prefix}_${arg}})
+            # message("")
             # message (ARGS_0!!!!)
             # message (${${prefix}_${arg}})
-        elseif (${arg} STREQUAL ARGS_1)
-            list (APPEND singleValues_r ${${prefix}_${arg}})
-        elseif (${arg} STREQUAL ARGS_N)
-            list (APPEND multiValues_r ${${prefix}_${arg}})
-        endif ()
-        list (APPEND multiValues_r ${${prefix}_${arg}})
+        # elseif (${arg} STREQUAL ARGS_1)
+            # list (APPEND singleValues_r ${${prefix}_${arg}})
+        # elseif (${arg} STREQUAL ARGS_N)
+            # list (APPEND multiValues_r ${${prefix}_${arg}})
+        # endif ()
+        # list (APPEND multiValues_r ${${prefix}_${arg}})
         # message("  ${arg} = ${${prefix}_${arg}}")
     endforeach()
+    # message(${noValues_r})
 
     function (${function_name})
+        set(prefix       ARG)
+        set(noValues     ${noValues_r})
+        set(singleValues ${singleValues_r})
+        set(multiValues  ${multiValues_r})
 
-        foreach(arg IN LISTS noValues_r)
-            message(${${prefix}_${arg}})
-            if(${${prefix}_${arg}})
+        cmake_parse_arguments(${prefix}
+                            "${noValues}"
+                            "${singleValues}"
+                            "${multiValues}"
+                            ${ARGN}
+        )
+
+
+        foreach(arg IN LISTS noValues)
             
-                message("  ${arg} enabled")
-            else()
-                message("  ${arg} disabled")
-            endif()
+            # if(${${prefix}_${arg}})
+                # message("  ${arg} enabled")
+            # else()
+                # message("  ${arg} disabled")
+            # endif()
         endforeach()
 
         
 
-        foreach(arg IN LISTS singleValues_r)
+        foreach(arg IN LISTS singleValues)
             # cmake_language(CALL ${arg} ${${prefix}_${arg}})
             # Single argument values will print as a simple string
             # Multiple argument values will print as a list
-            message("  ${arg} = ${${prefix}_${arg}}")
+            # message("  ${arg} = ${${prefix}_${arg}}")
         endforeach()
 
-        foreach(arg IN LISTS multiValues_r)
+        foreach(arg IN LISTS multiValues)
+
             # Single argument values will print as a simple string
             # Multiple argument values will print as a list
-            message("  ${arg} = ${${prefix}_${arg}}")
+            # message("  ${arg} = ${${prefix}_${arg}}")
         endforeach()
 
     endfunction()
