@@ -1,5 +1,10 @@
 cmake_minimum_required (VERSION 3.19.4)
 
+get_filename_component(root_src_dir src ABSOLUTE CACHE "")
+get_filename_component(root_include_dir include ABSOLUTE CACHE "")
+get_filename_component(root_binary_dir ${CMAKE_CURRENT_BINARY_DIR} ABSOLUTE CACHE "")
+get_filename_component(root_dir ${CMAKE_CURRENT_LIST_DIR} ABSOLUTE CACHE "")
+
 include (cmake/functions.cmake)
 
 func (SOURCES foo.cpp bar.cpp TARGET kiss SNOPP myApp ENABLE_NET)
@@ -7,7 +12,7 @@ func (COOL_STUFF TARGET dummy IMAGES here.png there.png gone.png)
 
 # return ()
 
-ph_current_dir_name (self)
+ph_define_current_dir_name (self CACHE)
 
 # return()
 

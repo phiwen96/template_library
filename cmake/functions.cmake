@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.19.4)
 
-macro (ph_current_dir_name res)
-    get_filename_component (${res} ${CMAKE_CURRENT_LIST_DIR} NAME CACHE)
+macro (ph_define_current_dir_name res)
+    get_filename_component (${res} ${CMAKE_CURRENT_LIST_DIR} NAME ${ARGN})
     string(REPLACE " " "_" res ${res})
 endmacro ()
 
