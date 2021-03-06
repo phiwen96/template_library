@@ -2,121 +2,159 @@ cmake_minimum_required (VERSION 3.19.4)
 include(CMakeParseArguments)
 
 macro (ph_gen_function)
-    set(prefix       ARG_)
-    set(options     )
-    set(oneValueArgs )
-    set(multiValueArgs  OPTION VALUE MULTIVALUE)
+    # set(prefix       ARG_)
+    set(options    )
+    set(oneValueArgs)
+    set(multiValueArgs OPTION VALUE MULTIVALUE)
 
     # message(${multiValueArgs})
-    cmake_parse_arguments("${prefix}" "${options}" "${oneValueArgs}" "${multiValueArgs}" "${ARGN}") 
-
-    # message("${${prefix}_UNPARSED_ARGUMENTS}")
-    # message("${${prefix}_OPTION}")
-    # message("${${prefix}_VALUE}")
-    # message("${${prefix}_MULTIVALUE}")
-    foreach(arg IN LISTS multiValueArgs)
-        foreach(arg2 ${arg})
-            # message("${arg} ${arg2}")
-        endforeach()
-        
-        # if(${${prefix}_${arg}})
-        #     # list (APPEND prefix_r ${arg})
-        #     # message("  ${arg} enabled")
-        # else()
-        #     # message("  ${arg} disabled")
-        # endif()
-    endforeach()
-    foreach(arg IN LISTS singleValues)
-        # list (APPEND singleValues_r ${${prefix}_${arg}})
-        # message("  ${arg} = ${${prefix}_${arg}}")
-    endforeach()
-    foreach(arg IN LISTS multiValueArgs)
-        
-        # if (${${prefix}_${arg}} STREQUAL ARGS_0)
-            foreach(arg2 ${${prefix}_${arg}})
-                if (${arg} STREQUAL OPTION)
-                    set (${options} ${options} ${arg2})
-                    # message("OPTION ${arg2}")
-                    # set (noValues_r ${noValues_r} ${arg2})
-                elseif (${arg} STREQUAL VALUE)
-                    set (${oneValueArgs} ${oneValueArgs} ${arg2})
-                    # message("VALUE ${arg2}")
-                    # set (singleValues_r ${singleValues_r} ${arg2})
-                elseif (${arg} STREQUAL MULTIVALUE)
-                    # message("MULTIVALUE ${arg2}")
-                
-                    set (${multiValueArgs} ${multiValueArgs} ${arg2})
-                    # set (multiValues_r ${multiValues_r} ${arg2})
-                endif ()
-                # message("${arg} ${arg2}")
-                # message()
-            endforeach()
-            
-            # message("  ${arg} = ${${prefix}_${arg}}")
-            # string(REPLACE " " ";" res3 "${${prefix}_${arg}}")
-            # set (noValues_r ${res3})
-            # set (noValues_r "${${prefix}_${arg}}")
-        # endif()
-
-   
-
-
-    endforeach()
-    # message("noValues_r = ${noValues_r}")
-
-    # foreach(a ${noValues_r})
-    #     message(${a})
-    # endforeach()
-    # # set(noValues_r ${noValues_r})
-    # string (REPLACE ";" " " noValues_r "${noValues_r}")
-    # set (noValues_r ${noValues_r})
-    # message("noValues_r = ${noValues_r}")
-    # string (REPLACE ";" " " singleValues_r ${singleValues_r})
-    # set (noValues_r ${singleValues_r})
-
-    # string (REPLACE ";" " " multiValues_r ${multiValues_r})
-    # set (noValues_r ${multiValues_r})
-    
+    cmake_parse_arguments(KUK "${options}" "${oneValueArgs}" "${multiValueArgs}" "${ARGN}") 
 
     
-    # message(${singleValue_r})
-    # message(${multiValue_r})
+    # Mandatory
+    if( KUK_OPTION )
+        # message( STATUS "inside OPTION=${KUK_OPTION}" )
+        set (options ${KUK_OPTION})
+        message( STATUS "${options}" )
+    endif()
+
+    if( KUK_VALUE )
+        # message( STATUS "inside OPTION=${KUK_VALUE}" )
+        set (oneValueArgs ${KUK_VALUE})
+        message( STATUS "${oneValueArgs}" )
+    endif()
+
+    if( KUK_MULTIVALUE )
+        # message( STATUS "inside OPTION=${KUK_MULTIVALUE}" )
+        set (multiValueArgs ${KUK_MULTIVALUE})
+        message( STATUS "${multiValueArgs}" )
+    endif()
+
+    # message(${options})
+    # string (REPLACE ";" " " options "${options}")
+    # string (REPLACE ";" " " multiValueArgs ${multiValueArgs})
+    #         string(REPLACE " " ";" oneValueArgs "${oneValueArgs}")
+
+    #         message(${options})
+    #         message(${oneValueArgs})
+    #         message(${multiValueArgs})
 
     macro (bajskorven)
         # message (${ARGN})
-        set(prefix       ARG_)
-    set(option     ${option})
-    set(oneValueArgs ${oneValueArgs})
-    set(multiValueArgs  ${multiValueArgs})
+        # set(prefix       ARG_)
+    # set(options     ${options})
+    # set(oneValueArgs ${oneValueArgs})
+    # set(multiValueArgs  ${multiValueArgs})
+    # message(${option})
+
+
+    message("${SOURCES}")
+
+        cmake_parse_arguments( _arg  "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN}) 
+
+        
+        message("${options}")
+
+        message("${SOURCES}")
+
+    foreach(arg ${options})
+        message(${arg})
+        if(${arg} IN_LIST _arg_KEYWORDS_MISSING_${arg})
+            message(STATUS "${arg}: missed value")
+        elseif(NOT DEFINED _arg_${arg})
+            message(STATUS "${arg}: undefined")
+        else()
+            message(STATUS "${arg}: got the value `${_arg_${arg}}`")
+        endif()
+    endforeach()
+
+    foreach(arg ${oneValueArgs})
+        # message(${arg})
+        if(${arg} IN_LIST _arg_KEYWORDS_MISSING_${arg})
+            message(STATUS "${arg}: missed value")
+        elseif(NOT DEFINED _arg_${arg})
+            message(STATUS "${arg}: undefined")
+        else()
+            message(STATUS "${arg}: got the value `${_arg_${arg}}`")
+        endif()
+    endforeach()
+
+    foreach(arg ${multiValueArgs})
+        # message(${arg})
+        if(${arg} IN_LIST _arg_KEYWORDS_MISSING_${arg})
+            message(STATUS "${arg}: missed value")
+        # elseif(NOT DEFINED _arg_${arg})
+            # message(STATUS "${arg}: undefined")
+        else()
+            foreach(arg2 ${arg})
+                message(${arg2})
+            endforeach()
+            
+            # message(STATUS "${arg}: got the value `${_arg_${arg}}`")
+        endif()
+    endforeach()
+    
         
 
-        cmake_parse_arguments("${prefix}" "${options}" "${oneValueArgs}" "${multiValueArgs}" "${ARGN}") 
+        # foreach(arg IN ITEMS ${ARGN})
+        #     message(STATUS "\n ARG : ${arg} \n")
+        # endforeach()
 
-        foreach(arg IN LISTS oneValueArgs multiValueArgs)
-            message("  ${arg} = ${${prefix}_${arg}}")
+        foreach(arg IN ITEMS ${options2})
+            # message(STATUS "\n ARG : FITTA_${arg} \n")
         endforeach()
 
+        # foreach(arg IN ITEMS ARGN)
+        # message("hej")
+        #     message(STATUS "\n ARG : ${arg} \n")
+        # endforeach()
+        
 
-        foreach(arg IN LISTS ${options})
-            message("  ${arg} = ${${prefix}_${arg}}")
+        # message(options2)
+        foreach(arg IN LISTS options)
             # message(${${prefix}_${arg}})
             if(${${prefix}_${arg}})
             # message("  ${arg} = ${${prefix}_${arg}}")
-              message("  ${arg} enabled")
+            #   message("  ${arg} enabled")
           else()
-              message("  ${arg} disabled")
+            #   message("  ${arg} disabled")
           endif()
         endforeach()
 
-        
-
+        # message(oneValueArgs2)
         foreach(arg IN LISTS oneValueArgs)
-        message("  ${arg} = ${${prefix}_${arg}}")
+        # message("  ${arg} = ${FITTA_${arg}}")
+        # message(${arg})
+            # message("${${prefix}_${arg}}")
+            # message("${arg}")
             # cmake_language(CALL ${arg} ${${prefix}_${arg}})
             # Single argument values will print as a simple string
             # Multiple argument values will print as a list
             # message("  ${arg} = ${${prefix}_${arg}}")
         endforeach()
+
+        # message(multiValueArgs2)
+        foreach(arg IN LISTS  multiValueArgs)
+        # get_filename_component (kk "${${prefix}_${arg}}" NAME)
+        # message("${kk}")
+        # message("${${prefix}_${arg}}")
+        # message(${arg})
+        # message("${arg}")
+        # message("${${prefix}_MULTIVALUE}")
+        # message(${prefix}_${arg})
+        # message("${${prefix}_${arg}}")
+          
+            
+            # message("${${prefix}_${arg}}")
+            # message("  ${arg} = ${${prefix}_${arg}}")
+        endforeach()
+
+
+        
+
+        
+
+        
 
         foreach(arg IN LISTS ${multiValues_r})
         # message("  ${arg} = ${${prefix}_${arg}}")
@@ -128,6 +166,17 @@ macro (ph_gen_function)
     endmacro()
     
 endmacro ()
+
+
+
+
+
+
+
+
+
+
+
 
 macro (ph_parse function_name)
     # Define the supported set of keywords
@@ -198,8 +247,13 @@ endmacro ()
 
 
 
-macro (ph_define_current_dir_name res)
-   
+macro (ph_define_self res)
+    set (options PUBLIC)
+    cmake_parse_arguments (KUK "${options}" "" "" ${ARGN})
+    if (KUK_PUBLIC)
+        message("PUBLIC!!!!")
+
+    endif ()
     get_filename_component (${res} ${CMAKE_CURRENT_LIST_DIR} NAME ${ARGN})
     string(REPLACE " " "_" res ${res})
 endmacro ()
@@ -276,3 +330,57 @@ endfunction()
 
 # message(STATUS "list = ${SEXY_LIST}")
 # # list = I;love;CMake
+
+
+
+# message ("number of arguments sent to function: ${ARGC}")
+#   message ("all function arguments:               ${ARGV}")
+#   message ("all arguments beyond defined:         ${ARGN}") 
+
+
+
+macro(ph_get_property ret var)
+get_property(${ret} GLOBAL PROPERTY ${var})
+endmacro()
+
+macro(ph_define_property res var)
+    set_property (GLOBAL PROPERTY ${res} ${var})
+endmacro()
+
+
+
+macro (ph_header_list return_list)
+    if (${ARGN} EQUALS 1)
+        file (GLOB_RECURSE new_list ${ARGN}/*.hpp)
+    elseif()
+        file (GLOB_RECURSE new_list *.h)
+    endif()
+    file (GLOB_RECURSE new_list *.h)
+    set (dir_list "")
+    foreach (file_path ${new_list})
+        get_filename_component (dir_path ${file_path} PATH)
+        set (dir_list ${dir_list} ${dir_path})
+    endforeach ()
+    list (REMOVE_DUPLICATES dir_list)
+    set (${return_list} ${dir_list})
+endmacro ()
+
+
+
+
+
+# reading files
+
+# # Assuming the canonical version is listed in a single line
+# # This would be in several parts if picking up from MAJOR, MINOR, etc.
+# set(VERSION_REGEX "#define MY_VERSION[ \t]+\"(.+)\"")
+
+# # Read in the line containing the version
+# file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/include/My/Version.hpp"
+#     VERSION_STRING REGEX ${VERSION_REGEX})
+
+# # Pick out just the version
+# string(REGEX REPLACE ${VERSION_REGEX} "\\1" VERSION_STRING "${VERSION_STRING}")
+
+# # Automatically getting PROJECT_VERSION_MAJOR, My_VERSION_MAJOR, etc.
+# project(My LANGUAGES CXX VERSION ${VERSION_STRING})

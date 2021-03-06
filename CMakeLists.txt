@@ -7,26 +7,8 @@ get_filename_component(root_dir ${CMAKE_CURRENT_LIST_DIR} ABSOLUTE CACHE "")
 
 include (cmake/functions.cmake)
 
-function(test)
-    ph_parse (OPTION z VALUE o1 o2 MULTIVALUE n1 n2)
-    function(z)
-        
-    endfunction()
-    
-    kiss (${ARGN})
-    
-endfunction()
 
-# test (z)
 
-ph_gen_function (OPTION ENABLE_NET COOL_STUFF VALUE TARGET2 TARGET1 MULTIVALUE SOURCES IMAGES)
-# function(z1)
-#     message(Z1!!!!!)
-# endfunction()
-
-bajskorven(SOURCES foo.cpp bar.cpp TARGET myApp ENABLE_NET)
-message("")
-bajskorven(COOL_STUFF TARGET dummy IMAGES here.png there.png gone.png)
 # bajs (z1 snipp o1 kuken o2 "hej" n1 sd jn "km" n2 "l," km)
 
 
@@ -34,8 +16,35 @@ bajskorven(COOL_STUFF TARGET dummy IMAGES here.png there.png gone.png)
 # func (COOL_STUFF TARGET dummy IMAGES here.png there.png gone.png)
 
 # return ()
+# variable_watch(myVar [command])
+# set_property(GLOBAL PROPERTY source_list_property "bajs")
+ph_define_self (self)
+ph_define_property (root_name ${self})
 
-ph_define_current_dir_name (self CACHE PUBLIC)
+# ph_header_list (headers)
+# message(${headers})
+message ("$<CONFIG>")
+# $<CXX_COMPILER_ID>
+
+# $<TARGET_NAME_IF_EXISTS:tgt>
+
+# $<TARGET_FILE_BASE_NAME:tgt>
+
+# $<TARGET_FILE:tgt>
+# Full path to the tgt binary file.
+
+# Base name of tgt, i.e. $<TARGET_FILE_NAME:tgt> without prefix and suffix. For example, if the tgt filename is libbase.so, the base name is base.
+# The target name tgt if the target exists, an empty string otherwise.
+
+# $<TARGET_FILE_PREFIX:tgt>
+# Prefix of the tgt filename (such as lib).
+
+# $<TARGET_FILE_SUFFIX:tgt>
+# Suffix of the tgt filename (extension such as .so or .exe).
+
+# $<SHELL_PATH:...>
+# Content of ... converted to shell path style. For example, slashes are converted to backslashes in Windows shells
+# return()
 
 # return()
 
@@ -49,8 +58,12 @@ project (
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 	set (CMAKE_CXX_STANDARD 20)
 	set (CMAKE_CXX_STANDARD_REQUIRED ON)
+    set(CMAKE_CXX_EXTENSIONS        ON)
+    set (CMAKE_BUILD_TYPE Debug)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror" CACHE STRING "C++ flags")
 
 	set_property(GLOBAL PROPERTY USE_FOLDERS YES)
+    
 
 	# find_package (Boost 1.75 REQUIRED)
 	# find_package(Vulkan REQUIRED)
