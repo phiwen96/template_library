@@ -1,58 +1,50 @@
-cmake_minimum_required (VERSION 3.19.4)
 
-get_filename_component (self )
+# ph_current_dir_name (self)
 
-project (
-	template_library
-	VERSION 1.0
-	DESCRIPTION "Very nice project"
-	LANGUAGES CXX)
+file (GLOB_RECURSE HEADER_LIST ${${CMAKE_PROJECT_NAME}_SOURCE_DIR}/include/*.hpp)
+file (GLOB_RECURSE SOURCE_LIST ${${CMAKE_PROJECT_NAME}_SOURCE_DIR}/src/*.cpp)
 
-
-
-
-file (GLOB_RECURSE HEADER_LIST ${template_library_SOURCE_DIR}/include/*.hpp)
-file (GLOB_RECURSE SOURCE_LIST ${template_library_SOURCE_DIR}/src/*.cpp)
-
-if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-	set (CMAKE_CXX_STANDARD 20)
-	set (CMAKE_CXX_STANDARD_REQUIRED ON)
-
-	set_property(GLOBAL PROPERTY USE_FOLDERS YES)
-
-	# find_package (Boost 1.75 REQUIRED)
-	# find_package(Vulkan REQUIRED)
-	# find_package(glfw3 REQUIRED)
-	# find_package(glm REQUIRED)
-
-	# include (CTest)
-	
-endif()
+# file(GLOB_RECURSE HEADER_LIST "${phulkan_SOURCE_DIR}/include/phulkan/*.hpp")
+# file(GLOB SOURCE_LIST ${phulkan_SOURCE_DIR}/src/*.cpp)
 
 # add_subdirectory (generators)
 
-add_library (phulkan_generator STATIC ${SOURCE_LIST} ${HEADER_LIST})
+add_library (${CMAKE_PROJECT_NAME} STATIC ${SOURCE_LIST} ${HEADER_LIST})
 
-generate (phulkan_generator ${CMAKE_CURRENT_SOURCE_DIR}/include/phulkan_generator/instance.hpp ${CMAKE_CURRENT_SOURCE_DIR}/include/phulkan_generator/gpu.hpp)
-
-
-target_include_directories (phulkan_generator PUBLIC include)
-target_include_directories (phulkan_generator PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+# generate (phulkan_generator ${CMAKE_CURRENT_SOURCE_DIR}/include/phulkan_generator/instance.hpp ${CMAKE_CURRENT_SOURCE_DIR}/include/phulkan_generator/gpu.hpp)
 
 
+target_include_directories (${CMAKE_PROJECT_NAME} PUBLIC include)
+target_include_directories (${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
-target_include_directories(phulkan_generator PRIVATE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/phulkan_generator>
+
+
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/${CMAKE_PROJECT_NAME}>
     $<INSTALL_INTERFACE:include/phulkan_generator>
 )
 
-target_include_directories(phulkan_generator PUBLIC
+target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
 
-add_subdirectory(apps)
 
 
 
 # cmake -S . -B xbuild -GXcode && cmake --open xbuild
+
+
+
+
+
+set_target_properties (${CMAKE_PROJECT_NAME} PROPERTIES
+    OUTPUT_NAME ${CMAKE_PROJECT_NAME}
+    MACOSX_BUNDLE TRUE
+    MACOSX_RPATH TRUE
+    MACOSX_FRAMEWORK_IDENTIFIER com.testcmake.bundlename
+    XCODE_ATTRIBUTE_LD_RUNPATH_SEARCH_PATHS "@loader_path/Libraries"
+    RESOURCE "${RESOURCE_FILES}"
+    XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME TRUE
+    XCODE_ATTRIBUTE_EXECUTABLE_NAME "exeName"
+)
