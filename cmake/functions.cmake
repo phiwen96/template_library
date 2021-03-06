@@ -36,7 +36,7 @@ macro (ph_gen_function)
             foreach(arg2 ${${prefix}_${arg}})
                 if (${arg} STREQUAL OPTION)
                     set (${options} ${options} ${arg2})
-                    message("OPTION ${arg2}")
+                    # message("OPTION ${arg2}")
                     # set (noValues_r ${noValues_r} ${arg2})
                 elseif (${arg} STREQUAL VALUE)
                     set (${oneValueArgs} ${oneValueArgs} ${arg2})
@@ -93,14 +93,12 @@ macro (ph_gen_function)
         cmake_parse_arguments("${prefix}" "${options}" "${oneValueArgs}" "${multiValueArgs}" "${ARGN}") 
 
         foreach(arg IN LISTS oneValueArgs multiValueArgs)
-        # Single argument values will print as a simple string
-        # Multiple argument values will print as a list
-        message("  ${arg} = ${${prefix}_${arg}}")
-    endforeach()
+            message("  ${arg} = ${${prefix}_${arg}}")
+        endforeach()
 
 
-        foreach(arg IN LISTS options)
-            # message("  ${arg} = ${${prefix}_${arg}}")
+        foreach(arg IN LISTS ${options})
+            message("  ${arg} = ${${prefix}_${arg}}")
             # message(${${prefix}_${arg}})
             if(${${prefix}_${arg}})
             # message("  ${arg} = ${${prefix}_${arg}}")
@@ -113,7 +111,7 @@ macro (ph_gen_function)
         
 
         foreach(arg IN LISTS oneValueArgs)
-        # message("  ${arg} = ${${prefix}_${arg}}")
+        message("  ${arg} = ${${prefix}_${arg}}")
             # cmake_language(CALL ${arg} ${${prefix}_${arg}})
             # Single argument values will print as a simple string
             # Multiple argument values will print as a list
