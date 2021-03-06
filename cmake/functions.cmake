@@ -1,104 +1,133 @@
 cmake_minimum_required (VERSION 3.19.4)
+include(CMakeParseArguments)
 
+macro (ph_gen_function)
+    set(prefix       ARG_)
+    set(options     )
+    set(oneValueArgs )
+    set(multiValueArgs  OPTION VALUE MULTIVALUE)
 
-macro (ph_gen_function function_name)
-    set(prefix       ARG)
-    set(noValues     NOVALS)
-    set(singleValues OMEv)
-    set(multiValues  ARGS_0 ARGS_1 ARGS_N)
+    # message(${multiValueArgs})
+    cmake_parse_arguments("${prefix}" "${options}" "${oneValueArgs}" "${multiValueArgs}" "${ARGN}") 
 
-    
-    cmake_parse_arguments(${prefix}
-                        "${noValues}"
-                        "${singleValues}"
-                        "${multiValues}"
-                        ${ARGN}
-    )
-    foreach(arg IN LISTS noValues)
-        if(${${prefix}_${arg}})
-            # list (APPEND prefix_r ${arg})
-            # message("  ${arg} enabled")
-        else()
-            # message("  ${arg} disabled")
-        endif()
+    # message("${${prefix}_UNPARSED_ARGUMENTS}")
+    # message("${${prefix}_OPTION}")
+    # message("${${prefix}_VALUE}")
+    # message("${${prefix}_MULTIVALUE}")
+    foreach(arg IN LISTS multiValueArgs)
+        foreach(arg2 ${arg})
+            # message("${arg} ${arg2}")
+        endforeach()
+        
+        # if(${${prefix}_${arg}})
+        #     # list (APPEND prefix_r ${arg})
+        #     # message("  ${arg} enabled")
+        # else()
+        #     # message("  ${arg} disabled")
+        # endif()
     endforeach()
     foreach(arg IN LISTS singleValues)
         # list (APPEND singleValues_r ${${prefix}_${arg}})
         # message("  ${arg} = ${${prefix}_${arg}}")
     endforeach()
-    foreach(arg IN LISTS multiValues)
+    foreach(arg IN LISTS multiValueArgs)
         
-        if (${arg} STREQUAL ARGS_0)
-            # message("  ${arg} = ${${prefix}_${arg}}")
-            set (noValues ${${prefix}_${arg}})
-        endif()
-
-        if (${arg} STREQUAL ARGS_1)
-            # message("  ${arg} = ${${prefix}_${arg}}")
-            set (singleValues ${${prefix}_${arg}})
-        endif()
-
-        if (${arg} STREQUAL ARGS_N)
-            # message("  ${arg} = ${${prefix}_${arg}}")
-            set (multiValues ${${prefix}_${arg}})
-        endif()
-        # if (${arg} STREQUAL ARGS_0)
-            # list (APPEND noValues_r ${${prefix}_${arg}})
-            # list (APPEND noValues_r ${${prefix}_${arg}})
-            # message(${${prefix}_${arg}})
-            # message("")
-            # message (ARGS_0!!!!)
-            # message (${${prefix}_${arg}})
-        # elseif (${arg} STREQUAL ARGS_1)
-            # list (APPEND singleValues_r ${${prefix}_${arg}})
-        # elseif (${arg} STREQUAL ARGS_N)
-            # list (APPEND multiValues_r ${${prefix}_${arg}})
-        # endif ()
-        # list (APPEND multiValues_r ${${prefix}_${arg}})
-        # message("  ${arg} = ${${prefix}_${arg}}")
-    endforeach()
-    # message(${noValues_r})
-
-    function (${function_name})
-        set(prefix       ARG)
-        set(noValues     ${noValues_r})
-        set(singleValues ${singleValues_r})
-        set(multiValues  ${multiValues_r})
-
-        cmake_parse_arguments(${prefix}
-                            "${noValues}"
-                            "${singleValues}"
-                            "${multiValues}"
-                            ${ARGN}
-        )
-
-
-        foreach(arg IN LISTS noValues)
+        # if (${${prefix}_${arg}} STREQUAL ARGS_0)
+            foreach(arg2 ${${prefix}_${arg}})
+                if (${arg} STREQUAL OPTION)
+                    set (${options} ${options} ${arg2})
+                    message("OPTION ${arg2}")
+                    # set (noValues_r ${noValues_r} ${arg2})
+                elseif (${arg} STREQUAL VALUE)
+                    set (${oneValueArgs} ${oneValueArgs} ${arg2})
+                    # message("VALUE ${arg2}")
+                    # set (singleValues_r ${singleValues_r} ${arg2})
+                elseif (${arg} STREQUAL MULTIVALUE)
+                    # message("MULTIVALUE ${arg2}")
+                
+                    set (${multiValueArgs} ${multiValueArgs} ${arg2})
+                    # set (multiValues_r ${multiValues_r} ${arg2})
+                endif ()
+                # message("${arg} ${arg2}")
+                # message()
+            endforeach()
             
-            # if(${${prefix}_${arg}})
-                # message("  ${arg} enabled")
-            # else()
-                # message("  ${arg} disabled")
-            # endif()
+            # message("  ${arg} = ${${prefix}_${arg}}")
+            # string(REPLACE " " ";" res3 "${${prefix}_${arg}}")
+            # set (noValues_r ${res3})
+            # set (noValues_r "${${prefix}_${arg}}")
+        # endif()
+
+   
+
+
+    endforeach()
+    # message("noValues_r = ${noValues_r}")
+
+    # foreach(a ${noValues_r})
+    #     message(${a})
+    # endforeach()
+    # # set(noValues_r ${noValues_r})
+    # string (REPLACE ";" " " noValues_r "${noValues_r}")
+    # set (noValues_r ${noValues_r})
+    # message("noValues_r = ${noValues_r}")
+    # string (REPLACE ";" " " singleValues_r ${singleValues_r})
+    # set (noValues_r ${singleValues_r})
+
+    # string (REPLACE ";" " " multiValues_r ${multiValues_r})
+    # set (noValues_r ${multiValues_r})
+    
+
+    
+    # message(${singleValue_r})
+    # message(${multiValue_r})
+
+    macro (bajskorven)
+        # message (${ARGN})
+        set(prefix       ARG_)
+    set(option     ${option})
+    set(oneValueArgs ${oneValueArgs})
+    set(multiValueArgs  ${multiValueArgs})
+        
+
+        cmake_parse_arguments("${prefix}" "${options}" "${oneValueArgs}" "${multiValueArgs}" "${ARGN}") 
+
+        foreach(arg IN LISTS oneValueArgs multiValueArgs)
+        # Single argument values will print as a simple string
+        # Multiple argument values will print as a list
+        message("  ${arg} = ${${prefix}_${arg}}")
+    endforeach()
+
+
+        foreach(arg IN LISTS options)
+            # message("  ${arg} = ${${prefix}_${arg}}")
+            # message(${${prefix}_${arg}})
+            if(${${prefix}_${arg}})
+            # message("  ${arg} = ${${prefix}_${arg}}")
+              message("  ${arg} enabled")
+          else()
+              message("  ${arg} disabled")
+          endif()
         endforeach()
 
         
 
-        foreach(arg IN LISTS singleValues)
+        foreach(arg IN LISTS oneValueArgs)
+        # message("  ${arg} = ${${prefix}_${arg}}")
             # cmake_language(CALL ${arg} ${${prefix}_${arg}})
             # Single argument values will print as a simple string
             # Multiple argument values will print as a list
             # message("  ${arg} = ${${prefix}_${arg}}")
         endforeach()
 
-        foreach(arg IN LISTS multiValues)
-
+        foreach(arg IN LISTS ${multiValues_r})
+        # message("  ${arg} = ${${prefix}_${arg}}")
             # Single argument values will print as a simple string
             # Multiple argument values will print as a list
             # message("  ${arg} = ${${prefix}_${arg}}")
         endforeach()
 
-    endfunction()
+    endmacro()
     
 endmacro ()
 
@@ -234,3 +263,18 @@ endfunction()
     
 
 
+
+
+
+function(ph_define_list_len list res)
+    list(LENGTH ${list} ${res})
+endfunction()
+
+# set(SEXY_STRING "I love CMake")
+# string(REPLACE " " ";" SEXY_LIST ${SEXY_STRING})
+
+# message(STATUS "string = ${SEXY_STRING}")
+# # string = I love CMake
+
+# message(STATUS "list = ${SEXY_LIST}")
+# # list = I;love;CMake

@@ -8,7 +8,7 @@ get_filename_component(root_dir ${CMAKE_CURRENT_LIST_DIR} ABSOLUTE CACHE "")
 include (cmake/functions.cmake)
 
 function(test)
-    ph_parse (ARGS_0 z ARGS_1 o1 o2 ARGS_N n1 n2)
+    ph_parse (OPTION z VALUE o1 o2 MULTIVALUE n1 n2)
     function(z)
         
     endfunction()
@@ -19,12 +19,15 @@ endfunction()
 
 # test (z)
 
-ph_gen_function (bajs ARGS_0 z1 z2 ARGS_1 o1 o2 ARGS_N n1 n2)
-function(z1)
-    message(Z1!!!!!)
-endfunction()
+ph_gen_function (OPTION ENABLE_NET COOL_STUFF VALUE TARGET2 TARGET1 MULTIVALUE SOURCES IMAGES)
+# function(z1)
+#     message(Z1!!!!!)
+# endfunction()
 
-# bajs (o1 kuken)
+bajskorven(SOURCES foo.cpp bar.cpp TARGET myApp ENABLE_NET)
+message("")
+bajskorven(COOL_STUFF TARGET dummy IMAGES here.png there.png gone.png)
+# bajs (z1 snipp o1 kuken o2 "hej" n1 sd jn "km" n2 "l," km)
 
 
 # func (SOURCES foo.cpp bar.cpp TARGET kiss SNOPP myApp ENABLE_NET)
