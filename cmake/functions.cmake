@@ -222,3 +222,23 @@ MACRO(ph_subdir_list result curdir)
   ENDFOREACH()
   SET(${result} ${dirlist})
 ENDMACRO()
+
+
+
+
+# libraries
+# >>>>>> accordingly
+# >>>>>> FILE(READ ${LIB_SOURCE_DIR}/include/config.h CURRENT_CONFIG)
+# >>>>>> STRING(REGEX MATCH "\#define USE_OPENGLES" GLES_IS_SET 
+# >>>>>> ${CURRENT_CONFIG})
+# >>>>>> STRING(REGEX MATCH "\#define USE_OPENGL" GL_IS_SET 
+# >>>>>> ${CURRENT_CONFIG})
+# >>>>>> IF("#define USE_OPENGLES" STREQUAL "${GLES_IS_SET}")
+# >>>>>> MESSAGE("GLES config!")
+# >>>>>> ELSE("#define USE_OPENGLES" STREQUAL "${GLES_IS_SET}")
+# >>>>>> IF("#define USE_OPENGL" STREQUAL "${GL_IS_SET}")
+# >>>>>>     MESSAGE("GL config!")
+# >>>>>> ELSE("#define USE_OPENGL" STREQUAL "${GL_IS_SET}")
+# >>>>>>     MESSAGE("Error! USE_GL or USE_GLES must be defined!")
+# >>>>>> ENDIF("#define USE_OPENGL" STREQUAL "${GL_IS_SET}")
+# >>>>>> ENDIF("#define USE_OPENGLES" STREQUAL "${GLES_IS_SET}")

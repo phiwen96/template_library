@@ -22,24 +22,29 @@ auto parse = [](string str){
 
 
 
+#define PH(...)
+
+
 
 
 int main() {
-//    BOOST_PP_CAT (1, 2)
+
     
-    BOOST_PP_EMPTY ()
     
-//    EMPTY (
-//
-//           template <>
-//           struct gpdu <#{i}>
-//           {#
-//        int count = #{i};
-//        };
-//
-//    )
+
     
-    string str = "hej kuk$<ph>(x, y) snopp";
+    PH(
+
+          
+           template <>
+           struct gpdu <${0 i 3}>
+           {
+        int count fp${i}
+        };
+
+    )
+    
+    string str = "hej kuk$(x, y) snopp";
     cout << parse (str) << endl;
     
     

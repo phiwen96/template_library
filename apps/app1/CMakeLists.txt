@@ -2,7 +2,7 @@ ph_define_self (self)
 
 find_package (Boost 1.75 REQUIRED)
 
-
+# target_precompile_headers(<target> REUSE_FROM <other_target>)
 
 add_executable(${self} MACOSX_BUNDLE app.cpp)
 
