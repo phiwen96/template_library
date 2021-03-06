@@ -1,8 +1,77 @@
 cmake_minimum_required (VERSION 3.19.4)
 
 
+macro (ph_gen_function function_name)
+    set(prefix       ARG)
+    set(noValues     NOVALS)
+    set(singleValues OMEv)
+    set(multiValues  ARGS_0 ARGS_1 ARGS_N)
 
-macro (ph_parse)
+    cmake_parse_arguments(${prefix}
+                        "${noValues}"
+                        "${singleValues}"
+                        "${multiValues}"
+                        ${ARGN}
+    )
+
+    foreach(arg IN LISTS noValues)
+        if(${${prefix}_${arg}})
+            list (APPEND prefix_r ${arg})
+            # message("  ${arg} enabled")
+        else()
+            # message("  ${arg} disabled")
+        endif()
+    endforeach()
+    foreach(arg IN LISTS singleValues)
+        list (APPEND singleValues_r ${${prefix}_${arg}})
+        # message("  ${arg} = ${${prefix}_${arg}}")
+    endforeach()
+    foreach(arg IN LISTS multiValues)
+        if (${arg} STREQUAL ARGS_0)
+            list (APPEND noValues_r ${${prefix}_${arg}})
+            # message (ARGS_0!!!!)
+            # message (${${prefix}_${arg}})
+        elseif (${arg} STREQUAL ARGS_1)
+            list (APPEND singleValues_r ${${prefix}_${arg}})
+        elseif (${arg} STREQUAL ARGS_N)
+            list (APPEND multiValues_r ${${prefix}_${arg}})
+        endif ()
+        list (APPEND multiValues_r ${${prefix}_${arg}})
+        # message("  ${arg} = ${${prefix}_${arg}}")
+    endforeach()
+
+    function (${function_name})
+
+        foreach(arg IN LISTS noValues_r)
+            message(${${prefix}_${arg}})
+            if(${${prefix}_${arg}})
+            
+                message("  ${arg} enabled")
+            else()
+                message("  ${arg} disabled")
+            endif()
+        endforeach()
+
+        
+
+        foreach(arg IN LISTS singleValues_r)
+            # cmake_language(CALL ${arg} ${${prefix}_${arg}})
+            # Single argument values will print as a simple string
+            # Multiple argument values will print as a list
+            message("  ${arg} = ${${prefix}_${arg}}")
+        endforeach()
+
+        foreach(arg IN LISTS multiValues_r)
+            # Single argument values will print as a simple string
+            # Multiple argument values will print as a list
+            message("  ${arg} = ${${prefix}_${arg}}")
+        endforeach()
+
+    endfunction()
+    
+endmacro ()
+
+macro (ph_parse function_name)
     # Define the supported set of keywords
     set(prefix       ARG)
     set(noValues     ARGS_0)
@@ -19,25 +88,22 @@ macro (ph_parse)
     foreach(arg IN LISTS noValues)
         if(${${prefix}_${arg}})
             list (APPEND prefix_r ${arg})
-                
-            message("  ${arg} enabled")
+            # message("  ${arg} enabled")
         else()
-            message("  ${arg} disabled")
+            # message("  ${arg} disabled")
         endif()
     endforeach()
     foreach(arg IN LISTS singleValues)
         list (APPEND singleValues_r ${${prefix}_${arg}})
-        # Single argument values will print as a simple string
-        # Multiple argument values will print as a list
-        message("  ${arg} = ${${prefix}_${arg}}")
+        # message("  ${arg} = ${${prefix}_${arg}}")
     endforeach()
     foreach(arg IN LISTS multiValues)
         list (APPEND multiValues_r ${${prefix}_${arg}})
-        # Single argument values will print as a simple string
-        # Multiple argument values will print as a list
-        message("  ${arg} = ${${prefix}_${arg}}")
+        # message("  ${arg} = ${${prefix}_${arg}}")
     endforeach()
     
+    set(message_command "message")
+    cmake_language(CALL ${message_command} STATUS "Hello World!")
 
     cmake_parse_arguments(${prefix}
                         "${noValues_r}"
@@ -45,6 +111,29 @@ macro (ph_parse)
                         "${multiValues_r}"
                         ${ARGN}
     )
+
+    function (kiss)
+    foreach(arg IN LISTS noValues_r)
+        if(${${prefix}_${arg}})
+                
+            message("  ${arg} enabled")
+        else()
+            message("  ${arg} disabled")
+        endif()
+    endforeach()
+    foreach(arg IN LISTS singleValues_r)
+        cmake_language(CALL ${arg} ${${prefix}_${arg}})
+        # Single argument values will print as a simple string
+        # Multiple argument values will print as a list
+        message("  ${arg} = ${${prefix}_${arg}}")
+    endforeach()
+    foreach(arg IN LISTS multiValues_r)
+        # Single argument values will print as a simple string
+        # Multiple argument values will print as a list
+        message("  ${arg} = ${${prefix}_${arg}}")
+    endforeach()
+    endfunction()
+
 
 endmacro ()
 

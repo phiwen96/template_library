@@ -9,10 +9,19 @@ include (cmake/functions.cmake)
 
 function(test)
     ph_parse (ARGS_0 z ARGS_1 o1 o2 ARGS_N n1 n2)
+    function(z)
+        
+    endfunction()
+    
+    kiss (${ARGN})
     
 endfunction()
 
-test ()
+# test (z)
+
+ph_gen_function (bajs ARGS_0 z1 z2 ARGS_1 o1 o2 ARGS_N n1 n2)
+
+bajs (z1)
 
 
 # func (SOURCES foo.cpp bar.cpp TARGET kiss SNOPP myApp ENABLE_NET)
